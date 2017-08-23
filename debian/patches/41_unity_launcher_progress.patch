@@ -7,11 +7,9 @@ Description: Add Unity support to show file transfer progress in the launcher
  src/empathy-ft-manager.c |   71 +++++++++++++++++++++++++++++++++++++++++++++++
  3 files changed, 104 insertions(+)
 
-Index: empathy-3.12.10/configure.ac
-===================================================================
---- empathy-3.12.10.orig/configure.ac
-+++ empathy-3.12.10/configure.ac
-@@ -79,6 +79,7 @@ GEOCODE_GLIB_REQUIRED=0.99.1
+--- a/configure.ac
++++ b/configure.ac
+@@ -78,6 +78,7 @@
  ISO_CODES_REQUIRED=0.35
  NAUTILUS_SENDTO_REQUIRED=2.90.0
  NETWORK_MANAGER_REQUIRED=0.7.0
@@ -19,7 +17,7 @@ Index: empathy-3.12.10/configure.ac
  CHAMPLAIN_REQUIRED=0.12.1
  CHEESE_GTK_REQUIRED=3.4.0
  LIBACCOUNTS_REQUIRED=1.4
-@@ -346,6 +347,34 @@ fi
+@@ -336,6 +337,34 @@
  
  AM_CONDITIONAL(HAVE_ENCHANT, test "x$have_enchant" = "xyes")
  
@@ -54,7 +52,7 @@ Index: empathy-3.12.10/configure.ac
  # -----------------------------------------------------------
  # Map view checks: libchamplain
  # -----------------------------------------------------------
-@@ -632,6 +661,7 @@ Configure summary:
+@@ -622,6 +651,7 @@
  	Display maps (libchamplain).:  ${have_libchamplain}
  	Location awareness (Geoclue):  ${have_geoclue}
  	Geocode support (Geocode)...:  ${have_geocode}
@@ -62,11 +60,9 @@ Index: empathy-3.12.10/configure.ac
  	Cheese webcam support ......:  ${have_cheese}
  	Camera monitoring...........:  ${have_gudev}
  
-Index: empathy-3.12.10/src/Makefile.am
-===================================================================
---- empathy-3.12.10.orig/src/Makefile.am
-+++ empathy-3.12.10/src/Makefile.am
-@@ -18,6 +18,7 @@ CPPFLAGS_COMMON =					\
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -18,6 +18,7 @@
  AM_LDFLAGS = $(LIBM)
  AM_CPPFLAGS =						\
  	$(CPPFLAGS_COMMON)				\
@@ -74,7 +70,7 @@ Index: empathy-3.12.10/src/Makefile.am
  	$(LIBCHAMPLAIN_CFLAGS)				\
  	$(UOA_CFLAGS)					\
  	$(NULL)
-@@ -28,6 +29,7 @@ LDADD =								\
+@@ -28,6 +29,7 @@
  	$(top_builddir)/extensions/libemp-extensions.la		\
  	$(GCR_LIBS) 						\
  	$(EMPATHY_LIBS)						\
@@ -82,7 +78,7 @@ Index: empathy-3.12.10/src/Makefile.am
  	$(TPAW_LIBS)						\
  	$(LIBCHAMPLAIN_LIBS)					\
  	$(UOA_LIBS)						\
-@@ -169,6 +171,7 @@ empathy_LDADD =								\
+@@ -155,6 +157,7 @@
          $(top_builddir)/libempathy/libempathy.la			\
          $(top_builddir)/extensions/libemp-extensions.la			\
          $(EMPATHY_LIBS)							\
@@ -90,10 +86,8 @@ Index: empathy-3.12.10/src/Makefile.am
          $(LIBCHAMPLAIN_LIBS)						\
  	$(NULL)
  
-Index: empathy-3.12.10/src/empathy-ft-manager.c
-===================================================================
---- empathy-3.12.10.orig/src/empathy-ft-manager.c
-+++ empathy-3.12.10/src/empathy-ft-manager.c
+--- a/src/empathy-ft-manager.c
++++ b/src/empathy-ft-manager.c
 @@ -40,6 +40,8 @@
  #define DEBUG_FLAG EMPATHY_DEBUG_FT
  #include "empathy-debug.h"
@@ -103,7 +97,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
  enum
  {
    COL_PERCENT,
-@@ -59,6 +61,7 @@ typedef struct {
+@@ -59,6 +61,7 @@
    GtkWidget *open_button;
    GtkWidget *abort_button;
    GtkWidget *clear_button;
@@ -111,7 +105,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
  } EmpathyFTManagerPriv;
  
  enum
-@@ -78,6 +81,53 @@ static EmpathyFTManager *manager_singlet
+@@ -78,6 +81,53 @@
  static void ft_handler_hashing_started_cb (EmpathyFTHandler *handler,
      EmpathyFTManager *manager);
  
@@ -165,7 +159,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
  static gchar *
  ft_manager_format_interval (guint interval)
  {
-@@ -387,6 +437,8 @@ ft_manager_update_handler_progress (Empa
+@@ -387,6 +437,8 @@
        COL_PERCENT, percentage,
        -1);
  
@@ -174,7 +168,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
    gtk_tree_path_free (path);
  
  }
-@@ -453,6 +505,8 @@ ft_handler_transfer_error_cb (EmpathyFTH
+@@ -453,6 +505,8 @@
    ft_manager_clear_handler_time (manager, row_ref);
    ft_manager_update_buttons (manager);
  
@@ -183,7 +177,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
    g_free (message);
  }
  
-@@ -460,6 +514,7 @@ static void
+@@ -460,6 +514,7 @@
  do_real_transfer_done (EmpathyFTManager *manager,
                         EmpathyFTHandler *handler)
  {
@@ -191,7 +185,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
    const char *contact_name;
    const char *filename;
    char *first_line, *second_line, *message;
-@@ -469,6 +524,8 @@ do_real_transfer_done (EmpathyFTManager
+@@ -469,6 +524,8 @@
    GtkRecentManager *recent_manager;
    GFile *file;
  
@@ -200,7 +194,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
    row_ref = ft_manager_get_row_from_handler (manager, handler);
    g_return_if_fail (row_ref != NULL);
  
-@@ -494,6 +551,8 @@ do_real_transfer_done (EmpathyFTManager
+@@ -494,6 +551,8 @@
    ft_manager_update_handler_message (manager, row_ref, message);
    ft_manager_clear_handler_time (manager, row_ref);
  
@@ -209,7 +203,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
    /* update buttons */
    ft_manager_update_buttons (manager);
  
-@@ -530,6 +589,8 @@ ft_handler_transfer_done_cb (EmpathyFTHa
+@@ -530,6 +589,8 @@
    DEBUG ("Transfer done, no hashing");
  
    do_real_transfer_done (manager, handler);
@@ -218,7 +212,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
  }
  
  static void
-@@ -571,6 +632,8 @@ ft_handler_transfer_started_cb (EmpathyF
+@@ -571,6 +632,8 @@
                                  TpFileTransferChannel *channel,
                                  EmpathyFTManager *manager)
  {
@@ -227,7 +221,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
    guint64 transferred_bytes, total_bytes;
  
    DEBUG ("Transfer started");
-@@ -1078,6 +1141,12 @@ empathy_ft_manager_finalize (GObject *ob
+@@ -1078,6 +1141,12 @@
  
    g_hash_table_unref (priv->ft_handler_to_row_ref);
  
@@ -240,7 +234,7 @@ Index: empathy-3.12.10/src/empathy-ft-manager.c
    G_OBJECT_CLASS (empathy_ft_manager_parent_class)->finalize (object);
  }
  
-@@ -1095,6 +1164,8 @@ empathy_ft_manager_init (EmpathyFTManage
+@@ -1095,6 +1164,8 @@
        g_direct_equal, (GDestroyNotify) g_object_unref,
        (GDestroyNotify) gtk_tree_row_reference_free);
  

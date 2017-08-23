@@ -68,7 +68,6 @@ LIBCANBERRA_GTK_REQUIRED=0.25
 LIBNOTIFY_REQUIRED=0.7.0
 LIBSOUP_REQUIRED=2.42.0
 TELEPATHY_LOGGER=0.8.0
-IDO_REQUIRED=0.2.90
 WEBKIT_REQUIRED=2.10.0
 GOA_REQUIRED=3.5.1
 
@@ -79,7 +78,6 @@ GEOCODE_GLIB_REQUIRED=0.99.1
 ISO_CODES_REQUIRED=0.35
 NAUTILUS_SENDTO_REQUIRED=2.90.0
 NETWORK_MANAGER_REQUIRED=0.7.0
-UNITY_REQUIRED=3.4.0
 CHAMPLAIN_REQUIRED=0.12.1
 CHEESE_GTK_REQUIRED=3.4.0
 LIBACCOUNTS_REQUIRED=1.4
@@ -218,7 +216,6 @@ PKG_CHECK_MODULES(EMPATHY,
    libxml-2.0
    telepathy-glib >= $TELEPATHY_GLIB_REQUIRED
    telepathy-logger-0.2 >= $TELEPATHY_LOGGER
-   libido3-0.1 >= $IDO_REQUIRED
    x11
    gtk+-3.0 >= $GTK_REQUIRED
    libcanberra-gtk3 >= $LIBCANBERRA_GTK_REQUIRED
@@ -339,33 +336,6 @@ fi
 
 AM_CONDITIONAL(HAVE_ENCHANT, test "x$have_enchant" = "xyes")
 
-# libunity
-# -----------------------------------------------------------
-AC_ARG_ENABLE(libunity,
-               AS_HELP_STRING([--enable-libunity=@<:@no/yes/auto@:>@],
-                       [build libunity support]), ,
-                       enable_libunity=auto)
-
-if test "x$enable_unity" != "xno"; then
-   PKG_CHECK_MODULES(UNITY,
-   [
-     unity >= $UNITY_REQUIRED
-   ], have_unity="yes", have_unity="no")
-
-   if test "x$have_unity" = "xyes"; then
-      AC_DEFINE(HAVE_UNITY, 1, [Define if you have unity])
-   fi
-else
-   have_unity=no
-fi
-
-if test "x$enable_unity" = "xyes" -a "x$have_unity" != "xyes"; then
-   AC_MSG_ERROR([Could not find libunity.])
-fi
-
-AM_CONDITIONAL(HAVE_UNITY, test "x$have_unity" = "xyes")
-AC_SUBST([UNITY_CFLAGS])
-AC_SUBST([UNITY_LIBS])
 # -----------------------------------------------------------
 # Map view checks: libchamplain
 # -----------------------------------------------------------
@@ -652,7 +622,6 @@ Configure summary:
 	Display maps (libchamplain).:  ${have_libchamplain}
 	Location awareness (Geoclue):  ${have_geoclue}
 	Geocode support (Geocode)...:  ${have_geocode}
-	Unity panel support (unity).:  ${have_unity}
 	Cheese webcam support ......:  ${have_cheese}
 	Camera monitoring...........:  ${have_gudev}
 
