@@ -1,0 +1,38 @@
+Description: Link with correct libs for empathy-auth-client
+Author: Rico Tzschichholz <ricotz@ubuntu.com>
+
+---
+ src/Makefile.am                                          |    5 +++++
+ telepathy-account-widgets/tp-account-widgets/Makefile.am |    7 +++++++
+ 2 files changed, 12 insertions(+)
+
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -84,6 +84,11 @@ empathy_auth_client_SOURCES =						\
+ 	empathy-auth-client.c \
+ 	$(NULL)
+ 
++empathy_auth_client_LDADD =						\
++	$(LDADD)							\
++	$(UOA_LIBS)							\
++	$(NULL)
++
+ empathy_call_SOURCES = \
+        empathy-call.c \
+        empathy-call-factory.c \
+--- a/telepathy-account-widgets/tp-account-widgets/Makefile.am
++++ b/telepathy-account-widgets/tp-account-widgets/Makefile.am
+@@ -90,6 +90,13 @@ libtp_account_widgets_la_SOURCES =			\
+ 	$(nocheck_sources)				\
+ 	$(NULL)
+ 
++libtp_account_widgets_la_LDFLAGS =			\
++	$(CHEESE_LIBS)					\
++	$(TPAW_LIBS)					\
++	$(UOA_LIBS)					\
++	$(UDEV_LIBS)					\
++	$(NULL)
++
+ # these are sources that depend on Ubuntu Online Accounts
+ uoa_sources = \
+ 	tpaw-uoa-utils.c \

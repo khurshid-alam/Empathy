@@ -1,0 +1,2 @@
+libempathy-gtk 3.12.13 empathy (= ${binary:Version})
+libempathy 3.12.13 empathy (= ${binary:Version})

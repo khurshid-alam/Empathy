@@ -1,0 +1,142 @@
+Source: empathy
+Section: gnome
+Priority: optional
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Debian Telepathy maintainers <pkg-telepathy-maintainers@lists.alioth.debian.org>
+X-Ubuntu-Use-Langpack: yes
+Uploaders: Sjoerd Simons <sjoerd@debian.org>,
+           Dafydd Harries <daf@debian.org>,
+           Riccardo Setti <giskard@debian.org>,
+           Laurent Bigonville <bigon@debian.org>,
+           Emilio Pozuelo Monfort <pochu@debian.org>
+Build-Depends: cdbs (>= 0.4.90),
+               debhelper (>= 8),
+               dh-autoreconf,
+               libglib2.0-dev (>= 2.48.0),
+               libgtk-3-dev (>= 3.9.4),
+               libtelepathy-glib-dev (>= 0.23.2),
+               libtelepathy-logger-dev (>= 0.8.0),
+               intltool (>= 0.50.0),
+               libenchant-dev (>= 1.2.0),
+               iso-codes,
+               xsltproc,
+               yelp-tools,
+               libcanberra-gtk3-dev,
+               libnotify-dev (>= 0.7.0),
+               libx11-dev,
+               libdbus-glib-1-dev,
+               libgstreamer-plugins-base1.0-dev,
+               libnm-glib-dev (>= 0.7) [linux-any],
+               libnm-util-dev (>= 0.7) [linux-any],
+               geoclue-2.0 (>= 2.1.0),
+               libgcr-3-dev (>= 2.91.4),
+               libfolks-dev (>= 0.9.5),
+               libfolks-telepathy-dev (>= 0.9.5),
+               libwebkit2gtk-4.0-dev (>= 2.10.0),
+               gsettings-desktop-schemas-dev,
+               libgeocode-glib-dev (>= 0.99.1),
+               libcheese-gtk-dev (>= 3.7),
+               libclutter-gtk-1.0-dev (>= 1.4),
+               libclutter-gst-3.0-dev,
+               libcogl-dev (>= 1.14),
+               libgudev-1.0-dev [linux-any],
+               libmission-control-plugins-dev (>= 1:5.14.0),
+               libpulse-dev,
+               libtelepathy-farstream-dev (>= 0.6.0),
+               libgoa-1.0-dev (>= 3.8),
+               libchamplain-gtk-0.12-dev (>= 0.12.1),
+               libsecret-1-dev,
+               libido3-0.1-dev (>= 0.2.90),
+               libunity-dev (>= 5.0.0)
+Standards-Version: 3.9.8
+Vcs-Bzr: https://code.launchpad.net/~ubuntu-desktop/empathy/ubuntu
+Homepage: https://wiki.gnome.org/Apps/Empathy
+
+Package: empathy
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         empathy-common (= ${source:Version}),
+         telepathy-mission-control-5 (>= 1:5.12.0),
+         gsettings-desktop-schemas,
+         geoclue-2.0 (>= 2.0),
+         telepathy-logger (>= 0.2.13),
+         default-dbus-session-bus | dbus-session-bus,
+         gstreamer1.0-pulseaudio
+Recommends: telepathy-gabble,
+            telepathy-salut,
+            telepathy-haze,
+            gvfs-backends,
+            sound-theme-freedesktop,
+            gnome-contacts,
+Suggests: vino,
+          telepathy-idle
+Breaks: account-plugin-gadugadu (<< 3.12.12-3ubuntu2),
+        account-plugin-groupwise (<< 3.12.12-3ubuntu2),
+        account-plugin-icq (<< 3.12.12-3ubuntu2),
+        account-plugin-irc (<< 3.12.12-3ubuntu2),
+        account-plugin-jabber (<< 3.12.12-3ubuntu2),
+        account-plugin-mxit (<< 3.12.12-3ubuntu2),
+        account-plugin-myspace (<< 3.12.12-3ubuntu2),
+        account-plugin-salut (<< 3.12.12-3ubuntu2),
+        account-plugin-sametime (<< 3.12.12-3ubuntu2),
+        account-plugin-sip (<< 3.12.12-3ubuntu2),
+        account-plugin-yahoo (<< 3.12.12-3ubuntu2),
+        account-plugin-yahoojp (<< 3.12.12-3ubuntu2),
+        account-plugin-zephyr (<< 3.12.12-3ubuntu2),
+        mcp-account-manager-goa (<< 3.12.12-3ubuntu2),
+        mcp-account-manager-uoa (<< 3.12.12-3ubuntu2),
+Replaces: account-plugin-gadugadu (<< 3.12.12-3ubuntu2),
+          account-plugin-groupwise (<< 3.12.12-3ubuntu2),
+          account-plugin-icq (<< 3.12.12-3ubuntu2),
+          account-plugin-irc (<< 3.12.12-3ubuntu2),
+          account-plugin-jabber (<< 3.12.12-3ubuntu2),
+          account-plugin-mxit (<< 3.12.12-3ubuntu2),
+          account-plugin-myspace (<< 3.12.12-3ubuntu2),
+          account-plugin-salut (<< 3.12.12-3ubuntu2),
+          account-plugin-sametime (<< 3.12.12-3ubuntu2),
+          account-plugin-sip (<< 3.12.12-3ubuntu2),
+          account-plugin-yahoo (<< 3.12.12-3ubuntu2),
+          account-plugin-yahoojp (<< 3.12.12-3ubuntu2),
+          account-plugin-zephyr (<< 3.12.12-3ubuntu2),
+          libempathy-gtk-common,
+          mcp-account-manager-goa (<< 3.12.12-3ubuntu2),
+          mcp-account-manager-uoa (<< 3.12.12-3ubuntu2),
+Provides: account-plugin-gadugadu,
+          account-plugin-groupwise,
+          account-plugin-icq,
+          account-plugin-irc,
+          account-plugin-jabber,
+          account-plugin-mxit,
+          account-plugin-myspace,
+          account-plugin-salut,
+          account-plugin-sametime,
+          account-plugin-sip,
+          account-plugin-yahoo,
+          account-plugin-yahoojp,
+          account-plugin-zephyr,
+          mcp-account-manager-goa,
+          mcp-account-manager-uoa,
+Description: GNOME multi-protocol chat and call client
+ Instant messaging program supporting text, voice, video, file transfers
+ and inter-application communication over many different protocols,
+ including: AIM, Google Talk (Jabber/XMPP), Yahoo!, Salut, Gadu-Gadu,
+ Groupwise and ICQ.
+ .
+ This package contains the Empathy IM application and account manager.
+
+Package: empathy-common
+Architecture: all
+Depends: ${misc:Depends}
+Recommends: yelp
+Replaces: empathy (<< 2.27.92), empathy-doc, libempathy-common, libempathy-gtk-common
+Conflicts: empathy-doc, libempathy-common, libempathy-gtk-common
+Provides: empathy-doc, libempathy-common, libempathy-gtk-common
+Description: GNOME multi-protocol chat and call client (common files)
+ Instant messaging program supporting text, voice, video, file transfers
+ and inter-application communication over many different protocols,
+ including: AIM, Google Talk (Jabber/XMPP), Yahoo!, Salut, Gadu-Gadu,
+ Groupwise and ICQ.
+ .
+ This package contains the architecture independent files for Empathy
+ IM application.

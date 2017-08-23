@@ -1,0 +1,45 @@
+#!/usr/bin/make -f
+
+export AUTOPOINT = true
+
+include /usr/share/cdbs/1/rules/autoreconf.mk
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/gnome.mk
+
+DEB_DH_AUTORECONF_ARGS = --as-needed
+
+# List any files which are not installed
+include /usr/share/cdbs/1/rules/utils.mk
+DEB_DH_INSTALL_ARGS := --list-missing
+
+# Ensure at build time that the library has no dependencies on undefined
+# symbols, and speed up loading.
+DEB_LDFLAGS_MAINT_APPEND=-Wl,-z,defs -Wl,-O1 -Wl,--as-needed
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/default.mk
+
+DEB_CONFIGURE_EXTRA_FLAGS := --enable-spell=yes \
+                             --enable-location=yes \
+                             --enable-geocode=yes \
+                             --with-cheese \
+                             --with-eds \
+                             --disable-schemas-compile \
+                             --enable-map=yes \
+                             --enable-goa=yes
+
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+  DEB_CONFIGURE_EXTRA_FLAGS += --with-connectivity=nm --enable-gudev=yes
+else
+  DEB_CONFIGURE_EXTRA_FLAGS += --with-connectivity=no --enable-gudev=no
+endif
+
+DEB_DH_MAKESHLIBS_ARGS_ALL = -Xusr/lib/mission-control-plugins.0/ -Xusr/lib/empathy/
+DEB_DH_SHLIBDEPS_ARGS_ALL = -Lempathy
+DEB_DH_STRIP_ARGS = --dbgsym-migration='empathy-dbg (<< 3.12.11-2~)'
+
+binary-post-install/empathy::
+	rm -f debian/empathy/usr/lib/empathy/*.*a
+	rm -f debian/empathy/usr/lib/mission-control-plugins.0/*.*a
+
+include $(CURDIR)/debian/update-patches.mk
